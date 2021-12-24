@@ -1,8 +1,6 @@
 exports.handler = async (event, context) => {
   const sdk = require('api')('@mabldocs/v1.0#1wbh2zkr2mb6cs');
 
-  console.log(process.env.BRANCH)
-
   sdk.auth('key', 'HFZS3u6Ri3clMwr4TH8w3w')
   sdk.post('/events/deployment', {
     plan_overrides: {
