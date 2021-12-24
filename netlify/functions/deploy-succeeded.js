@@ -3,7 +3,7 @@ exports.handler = async (event, context) => {
   const sdk = require('api')('@mabldocs/v1.0#1wbh2zkr2mb6cs');
 
   sdk.auth('key', process.env.MABL_API_KEY)
-  sdk.post('https://api.mabl.com/events/deployment', {
+  sdk.post('/events/deployment', {
     plan_overrides: {
       http_headers: [{name: 'Content-Type', value: 'application/json', log_header_value: true}],
       //actions: {rebaseline_images: true, set_static_baseline: true},
