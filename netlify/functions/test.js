@@ -14,7 +14,7 @@ exports.handler = async (event, context) => {
       credentials_required: true,
       http_auth_credentials_id: 'string',
       http_auth_credentials_required: true,
-      revision: process.env.COMMIT_REF
+      //revision: process.env.COMMIT_REF
     },
     environment_id: 'bIIfJiJ4lefJcKozgmNBPw-e',
     application_id: 'Kew3dKp0yhv4MDOPXGNu7w-a'
