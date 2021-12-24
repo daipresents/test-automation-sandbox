@@ -17,7 +17,7 @@ exports.handler = async (event, context) => {
     },
     environment_id: 'bIIfJiJ4lefJcKozgmNBPw-e',
     application_id: 'Kew3dKp0yhv4MDOPXGNu7w-a',
-    source_control_tag: 'string'
+    //source_control_tag: 'string'
   })
     .then(res => console.log(res))
     .catch(err => console.error(err));
