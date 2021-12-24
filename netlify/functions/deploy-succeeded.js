@@ -1,27 +1,24 @@
 exports.handler = async (event, context) => {
-  let response
-  try {
-    response = await fetch('https://api.mabl.com/events/deployment', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': process.env.MABL_API_KEY,
-      },
-      body: JSON.stringify({ environment_id:bIIfJiJ4lefJcKozgmNBPw-e, application_id: Kew3dKp0yhv4MDOPXGNu7w-a })
-    })
-  } catch (err) {
-    return {
-      statusCode: err.statusCode || 500,
-      body: JSON.stringify({
-        error: err.message
-      })
-    }
-  }
+  
+  const sdk = require('api')('@mabldocs/v1.0#1wbh2zkr2mb6cs');
 
-  return {
-    statusCode: 200,
-    body: JSON.stringify({
-      data: response
-    })
-  }
+  sdk.auth('key', process.env.MABL_API_KEY)
+  sdk.post('https://api.mabl.com/events/deployment', {
+    plan_overrides: {
+      http_headers: [{name: 'Content-Type', value: 'application/json', log_header_value: true}],
+      //actions: {rebaseline_images: true, set_static_baseline: true},
+      //plan_labels: ['string'],
+      //uri: 'string',
+      //credentials_id: 'string',
+      //credentials_required: true,
+      //http_auth_credentials_id: 'string',
+      //http_auth_credentials_required: true,
+      revision: process.env.COMMIT_REF
+    },
+    environment_id: 'bIIfJiJ4lefJcKozgmNBPw-e',
+    application_id: 'Kew3dKp0yhv4MDOPXGNu7w-a',
+    source_control_tag: 'string'
+  })
+    .then(res => console.log(res))
+    .catch(err => console.error(err));
 }
