@@ -1,8 +1,5 @@
-// Docs on event and context https://www.netlify.com/docs/functions/#the-handler-method
 const handler = async (event) => {
   try {
-    //const subject = event.queryStringParameters.name || 'World'
-
     let response
     try {
       response = await fetch('https://api.mabl.com/events/deployment', {
