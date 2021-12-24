@@ -1,7 +1,5 @@
 exports.handler = async (event, context) => {
   const sdk = require('api')('@mabldocs/v1.0#1wbh2zkr2mb6cs');
-  
-  //console.log(process.env.COMMIT_REF)
 
   sdk.auth('key', process.env.MABL_API_KEY)
   sdk.post('/events/deployment', {
