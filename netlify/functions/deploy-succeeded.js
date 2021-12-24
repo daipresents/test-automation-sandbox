@@ -1,32 +1,29 @@
-const handler = async (event) => {
+const fetch = require('node-fetch')
+
+exports.handler = async (event, context) => {
+  let response
   try {
-    let response
-    try {
-      response = await fetch('https://api.mabl.com/events/deployment', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': process.env.MABL_API_KEY,
-        },
-        body: JSON.stringify({ environment_id:bIIfJiJ4lefJcKozgmNBPw-e, application_id: Kew3dKp0yhv4MDOPXGNu7w-a})
-      })
-    } catch (err) {
-      return {
-        statusCode: err.statusCode || 500,
-        body: JSON.stringify({
-          error: err.message
-        })
-    }
-
+    response = await fetch('https://api.mabl.com/events/deployment', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': process.env.MABL_API_KEY,
+      },
+      body: JSON.stringify({ environment_id:bIIfJiJ4lefJcKozgmNBPw-e, application_id: Kew3dKp0yhv4MDOPXGNu7w-a })
+    })
+  } catch (err) {
     return {
-
-      statusCode: 200,
-      //body: JSON.stringify({ message: `Hello ${subject}` }),
-      body: JSON.stringify({ message: `Called Deployment Event API.` }),
+      statusCode: err.statusCode || 500,
+      body: JSON.stringify({
+        error: err.message
+      })
     }
-  } catch (error) {
-    return { statusCode: 500, body: error.toString() }
+  }
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify({
+      data: response
+    })
   }
 }
-
-module.exports = { handler }
