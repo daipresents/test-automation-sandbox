@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	fmt.Println(os.Getenv("FOMABL_COMMIT_REFO")
+	fmt.Println(os.Getenv("MABL_COMMIT_REF")
 	
 
 	auth := "key:" + os.Getenv("MABL_API_KEY")
