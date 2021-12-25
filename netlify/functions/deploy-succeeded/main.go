@@ -10,6 +10,9 @@ import (
 )
 
 func main() {
+	fmt.Println(os.Getenv("FOMABL_COMMIT_REFO")
+	
+
 	auth := "key:" + os.Getenv("MABL_API_KEY")
   token := base64.StdEncoding.EncodeToString([]byte(auth))
 
