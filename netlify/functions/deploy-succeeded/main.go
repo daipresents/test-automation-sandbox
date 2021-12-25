@@ -7,15 +7,24 @@ import (
 	"strings"
 	"net/http"
 	"io/ioutil"
+	"github.com/daipresents/test-automation-sandbox"
 )
 
 func main() {
+	err := godotenv.Load(".env")
+	if err != nil {
+		fmt.Printf("Can not read .env file: %v", err)
+	} 
+
 	for _, e := range os.Environ() {
 		pair := strings.SplitN(e, "=", 2)
 		fmt.Println(pair[0])
 	}
-	
-	fmt.Println(os.Getenv("MABL_COMMIT_REF"))
+
+	fmt.Println("====")
+	fmt.Println(os.Getenv("NETLIFY_COMMIT_REF"))
+	fmt.Println(os.Getenv("NETLIFY_BUILD_ID"))
+	fmt.Println("====")
 	
 	auth := "key:" + os.Getenv("MABL_API_KEY")
   token := base64.StdEncoding.EncodeToString([]byte(auth))
