@@ -7,7 +7,7 @@ import (
 	"strings"
 	"net/http"
 	"io/ioutil"
-	"github.com/daipresents/test-automation-sandbox"
+	"github.com/joho/godotenv"
 )
 
 func main() {
@@ -25,7 +25,7 @@ func main() {
 	fmt.Println(os.Getenv("NETLIFY_COMMIT_REF"))
 	fmt.Println(os.Getenv("NETLIFY_BUILD_ID"))
 	fmt.Println("====")
-	
+
 	auth := "key:" + os.Getenv("MABL_API_KEY")
   token := base64.StdEncoding.EncodeToString([]byte(auth))
 
