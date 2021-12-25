@@ -11,14 +11,16 @@ import (
 
 func main() {
 	for _, e := range os.Environ() {
-		fmt.Println(e)
+		pair := strings.Split(e, "=")
+		fmt.Println(pair[0])
 	}
+
+	fmt.Println("-----")
+	fmt.Println(os.Getenv("MABL_API_KEY"))
+	fmt.Println("-----")
 
 	auth := "key:" + "HFZS3u6Ri3clMwr4TH8w3w"
   token := base64.StdEncoding.EncodeToString([]byte(auth))
-
-	fmt.Println(os.Getenv("MABL_API_KEY"))
-	fmt.Println(os.Getenv("COMMIT_REF"))
 
 	url := "https://api.mabl.com/events/deployment"
 
