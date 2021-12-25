@@ -12,7 +12,7 @@ jobs:
             - run: yarn
             - run: yarn build
             - run: yarn add netlify-cli
-            - run: yarn netlify deploy -p -d build -a ${NETLIFY_TOKEN} -s ${NETLIFY_SITE_ID}
+            - run: yarn netlify deploy -p -d build -a ${NETLIFY_TOKEN} -s ${NETLIFY_API_ID}
 
 workflows:
   netlify-deploy-workflow:
