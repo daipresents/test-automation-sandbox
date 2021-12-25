@@ -1,7 +1,6 @@
 version: 2.1
 orbs:
   node: circleci/node@1.1.6
-
 jobs:
   netlify-deploy:
     dexecutor:
@@ -16,6 +15,6 @@ jobs:
             - run: yarn netlify deploy -p -d build -a ${NETLIFY_TOKEN} -s ${NETLIFY_SITE_ID}
 
 workflows:
-  call-netlify-deploy:
+  netlify-deploy:
     jobs:
       - build-and-test
