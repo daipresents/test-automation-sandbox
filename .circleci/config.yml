@@ -26,6 +26,18 @@ jobs:
             - run: yarn add netlify-cli
             - run: yarn netlify deploy -p -d build -a ${NETLIFY_TOKEN} -s ${NETLIFY_API_ID}
 
+  run-mabl-test:
+    executor:
+      name: node/default
+    steps:
+      - deploy:
+          name: call mabl Deployment API Event
+          command: |
+            curl -s "https://api.mabl.com/events/deployment" \
+              -u "key:${MABL_API_KEY}" \
+              -H "Content-Type:application/json" \
+              -d "{\"environment_id\":\"bIIfJiJ4lefJcKozgmNBPw-e\",\"application_id\":\"Kew3dKp0yhv4MDOPXGNu7w-a\",\"plan_overrides\":{\"web_url\":\"https://61c72a21fa1ce466f1596b4c--test-automation-sandbox.netlify.app/\"},\"revision\":\"{{ .Revision }}\"}"
+
 workflows:
   netlify-deploy-workflow:
     jobs:
@@ -34,7 +46,10 @@ workflows:
             branches:
               only:
                 - /preview-.*/
+      
       - netlify-deploy-production:
           filters:
             branches:
               only: master
+      
+      - run-mabl-test
