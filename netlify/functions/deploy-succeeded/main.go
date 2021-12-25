@@ -21,6 +21,7 @@ func main() {
 		fmt.Println(pair[0])
 	}
 
+	
 	fmt.Println("====")
 	fmt.Println(os.Getenv("NETLIFY_COMMIT_REF"))
 	fmt.Println(os.Getenv("NETLIFY_BUILD_ID"))
