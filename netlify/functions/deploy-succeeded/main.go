@@ -7,21 +7,9 @@ import (
 	"strings"
 	"net/http"
 	"io/ioutil"
-	"github.com/joho/godotenv"
 )
 
 func main() {
-	err := godotenv.Load(".env")
-	if err != nil {
-		fmt.Printf("Can not read .env file: %v", err)
-	} 
-
-	for _, e := range os.Environ() {
-		pair := strings.SplitN(e, "=", 2)
-		fmt.Println(pair[0])
-	}
-
-	
 	fmt.Println("====")
 	fmt.Println(os.Getenv("NETLIFY_COMMIT_REF"))
 	fmt.Println(os.Getenv("NETLIFY_BUILD_ID"))
