@@ -58,7 +58,7 @@ jobs:
       - run:
           name: Post message to slack
           command: |
-            curl -X POST -H 'Content-type: application/json' --data "{'text':'Deployed to previev env. Preview URL: https://deploy-preview-${PR_NUMBER}--test-automation-sandbox.netlify.app/, mabl test is running: https://app.mabl.com/workspaces/-/output/deployments'}" ${SLACK_HOOK_URL}
+            curl -X POST -H 'Content-type: application/json' --data "{'text':'Deployed to <https://deploy-preview-${PR_NUMBER}--test-automation-sandbox.netlify.app/|previev env>. mabl test is running <https://app.mabl.com/workspaces/-/output/deployments|here>'}" ${SLACK_HOOK_URL}
 
 workflows:
   netlify-deploy-workflow:
