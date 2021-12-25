@@ -40,10 +40,6 @@ jobs:
             PR_NUMBER=`echo ${CIRCLE_PULL_REQUEST} | grep -oP '\d+$'`
             echo "export PR_NUMBER=$PR_NUMBER" >> $BASH_ENV
       - run:
-          name: "Echo"
-          command: |
-            echo "$PR_NUMBER"
-      - run:
           name: Call mabl Deployment API Event
           command: |
             curl -s "https://api.mabl.com/events/deployment" \
@@ -62,7 +58,7 @@ jobs:
       - run:
           name: Post message to slack
           command: |
-            curl -X POST -H 'Content-type: application/json' --data '{"text":"All done. Preview URL: https://deploy-preview-${PR_NUMBER}--test-automation-sandbox.netlify.app/, mabl test is running: https://app.mabl.com/workspaces/-/output/deployments"}' ${SLACK_HOOK_URL}
+            curl -X POST -H 'Content-type: application/json' --data "{'text':'Deployed to previev env. Preview URL: https://deploy-preview-${PR_NUMBER}--test-automation-sandbox.netlify.app/, mabl test is running: https://app.mabl.com/workspaces/-/output/deployments'}" ${SLACK_HOOK_URL}
 
 workflows:
   netlify-deploy-workflow:
