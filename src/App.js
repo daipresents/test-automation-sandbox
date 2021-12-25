@@ -1,22 +1,15 @@
-import logo from './logo.svg';
 import './App.css';
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <button
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Let's Start!!
-        </button>
+        <h1>テスト自動化トレーニングサイトへようこそ！</h1>
+        <form class="form">
+          <input type="text" placeholder="メールアドレス" />
+          <input type="password" placeholder="パスワード" />
+          <button type="submit" id="login">ログイン</button>
+        </form>
       </header>
     </div>
   );
