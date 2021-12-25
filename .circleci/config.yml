@@ -2,7 +2,19 @@ version: 2.1
 orbs:
   node: circleci/node@1.1.6
 jobs:
-  netlify-deploy:
+  netlify-deploy-preview:
+    executor:
+      name: node/default
+    steps:
+      - checkout
+      - node/with-cache:
+          steps:
+            - run: yarn
+            - run: yarn build
+            - run: yarn add netlify-cli
+            - run: yarn netlify deploy -d build -a ${NETLIFY_TOKEN} -s ${NETLIFY_API_ID}
+
+  netlify-deploy-production:
     executor:
       name: node/default
     steps:
@@ -17,4 +29,8 @@ jobs:
 workflows:
   netlify-deploy-workflow:
     jobs:
-      - netlify-deploy
+      - netlify-deploy-production:
+          filters:
+            branches:
+              only: master
+      - netlify-deploy-preview
