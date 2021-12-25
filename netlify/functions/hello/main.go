@@ -9,6 +9,10 @@ import (
 )
 
 func main() {
+	auth := "key:" + "HFZS3u6Ri3clMwr4TH8w3w"
+  token = base64.StdEncoding.EncodeToString([]byte(auth))
+	fmt.Printf(token)
+
 	fmt.Printf(os.Getenv("BUILD_ID"))
 	fmt.Printf(os.Getenv("COMMIT_REF"))
 
