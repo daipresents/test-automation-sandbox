@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	base64 "encoding/base64"
 	"os"
 	"strings"
 	"net/http"
@@ -10,7 +11,7 @@ import (
 
 func main() {
 	auth := "key:" + "HFZS3u6Ri3clMwr4TH8w3w"
-  token = base64.StdEncoding.EncodeToString([]byte(auth))
+  token := base64.StdEncoding.EncodeToString([]byte(auth))
 	fmt.Printf(token)
 
 	fmt.Printf(os.Getenv("BUILD_ID"))
