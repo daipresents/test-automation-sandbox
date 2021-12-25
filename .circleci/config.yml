@@ -29,8 +29,12 @@ jobs:
 workflows:
   netlify-deploy-workflow:
     jobs:
+      - netlify-deploy-preview:
+          filters:
+            branches:
+              only:
+                - /preview-.*/
       - netlify-deploy-production:
           filters:
             branches:
               only: master
-      - netlify-deploy-preview
