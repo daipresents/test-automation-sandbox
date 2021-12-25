@@ -14,6 +14,7 @@ func main() {
 		pair := strings.SplitN(e, "=", 2)
 		fmt.Println(pair[0])
 	}
+	
 	fmt.Println(os.Getenv("MABL_COMMIT_REF"))
 	
 	auth := "key:" + os.Getenv("MABL_API_KEY")
