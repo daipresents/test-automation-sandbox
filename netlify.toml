@@ -1,0 +1,2 @@
+[build.environment]
+ MABL_COMMIT_REF = 1234

@@ -10,9 +10,12 @@ import (
 )
 
 func main() {
+	for _, e := range os.Environ() {
+		pair := strings.SplitN(e, "=", 2)
+		fmt.Println(pair[0])
+	}
 	fmt.Println(os.Getenv("MABL_COMMIT_REF"))
 	
-
 	auth := "key:" + os.Getenv("MABL_API_KEY")
   token := base64.StdEncoding.EncodeToString([]byte(auth))
 
