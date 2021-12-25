@@ -11,11 +11,11 @@ import (
 
 func main() {
 	fmt.Println("====")
-	fmt.Println(os.Getenv("NETLIFY_COMMIT_REF"))
-	fmt.Println(os.Getenv("NETLIFY_BUILD_ID"))
+	fmt.Println(os.Getenv("COMMIT_REF"))
+	fmt.Println(os.Getenv("BUILD_ID"))
 	fmt.Println("====")
 
-	
+
 	auth := "key:" + os.Getenv("MABL_API_KEY")
   token := base64.StdEncoding.EncodeToString([]byte(auth))
 
