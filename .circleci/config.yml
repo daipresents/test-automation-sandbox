@@ -15,6 +15,6 @@ jobs:
             - run: yarn netlify deploy -p -d build -a ${NETLIFY_TOKEN} -s ${NETLIFY_SITE_ID}
 
 workflows:
-  netlify-deploy:
+  netlify-deploy-workflow:
     jobs:
-      - build-and-test
+      - netlify-deploy
