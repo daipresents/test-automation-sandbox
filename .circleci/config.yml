@@ -38,7 +38,7 @@ jobs:
             curl -s "https://api.mabl.com/events/deployment" \
               -u "key:${MABL_API_KEY}" \
               -H "Content-Type:application/json" \
-              -d "{\"environment_id\":\"bIIfJiJ4lefJcKozgmNBPw-e\",\"application_id\":\"Kew3dKp0yhv4MDOPXGNu7w-a\",\"plan_overrides\":{\"web_url\":\"https://deploy-preview-${CIRCLE_PR_NUMBER}--test-automation-sandbox.netlify.app/\"},\"revision\":\"$CIRCLE_SHA1\"}"
+              -d "{\"environment_id\":\"bIIfJiJ4lefJcKozgmNBPw-e\",\"application_id\":\"Kew3dKp0yhv4MDOPXGNu7w-a\",\"plan_overrides\":{\"web_url\":\"https://deploy-preview-$CIRCLE_PR_NUMBER--test-automation-sandbox.netlify.app/\"},\"revision\":\"$CIRCLE_SHA1\"}"
   notify-slack:
     executor:
       name: node/default
@@ -46,7 +46,7 @@ jobs:
       - deploy:
           name: Post message to slack
           command: |
-            curl -X POST -H 'Content-type: application/json' --data '{"text":"All done. Preview: https://deploy-preview-${CIRCLE_PR_NUMBER}--test-automation-sandbox.netlify.app/, Mabl: https://app.mabl.com/workspaces/-/output/deployments"}' $SLACK_HOOK_URL
+            curl -X POST -H 'Content-type: application/json' --data '{"text":"All done. Preview: https://deploy-preview-$CIRCLE_PR_NUMBER--test-automation-sandbox.netlify.app/, Mabl: https://app.mabl.com/workspaces/-/output/deployments"}' $SLACK_HOOK_URL
 workflows:
   netlify-deploy-workflow:
     jobs:
