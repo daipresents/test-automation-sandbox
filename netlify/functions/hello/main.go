@@ -9,8 +9,8 @@ import (
 )
 
 func main() {
-	fmt.println(os.Getenv("BUILD_ID"))
-	fmt.println(os.Getenv("COMMIT_REF"))
+	fmt.Printf(os.Getenv("BUILD_ID"))
+	fmt.Printf(os.Getenv("COMMIT_REF"))
 
 	url := "https://api.mabl.com/events/deployment"
 
