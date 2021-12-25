@@ -34,20 +34,26 @@ jobs:
     environment:
       REVISION: ${CIRCLE_PULL_REQUEST##*/}
     steps:
-      - deploy:
+      - run:
+          name: "Setup PR_NUMBER from ${CIRCLE_PULL_REQUEST}"
+          command: |
+            echo 'export PR_NUMBER=${CIRCLE_PULL_REQUEST##*/}' >> $BASH_ENV
+      - run:
           name: Call mabl Deployment API Event
           command: |
             curl -s "https://api.mabl.com/events/deployment" \
               -u "key:${MABL_API_KEY}" \
               -H "Content-Type:application/json" \
-              -d "{\"environment_id\":\"bIIfJiJ4lefJcKozgmNBPw-e\",\"application_id\":\"Kew3dKp0yhv4MDOPXGNu7w-a\",\"plan_overrides\":{\"web_url\":\"https://deploy-preview-${REVISION}--test-automation-sandbox.netlify.app/\"},\"revision\":\"${CIRCLE_SHA1}\"}"
+              -d "{\"environment_id\":\"bIIfJiJ4lefJcKozgmNBPw-e\",\"application_id\":\"Kew3dKp0yhv4MDOPXGNu7w-a\",\"plan_overrides\":{\"web_url\":\"https://deploy-preview-${PR_NUMBER}--test-automation-sandbox.netlify.app/\"},\"revision\":\"${CIRCLE_SHA1}\"}"
   notify-slack:
     executor:
       name: node/default
-    environment:
-      REVISION: ${CIRCLE_PULL_REQUEST##*/}
     steps:
-      - deploy:
+      - run:
+          name: "Setup PR_NUMBER from ${CIRCLE_PULL_REQUEST}"
+          command: |
+            echo 'export PR_NUMBER=${CIRCLE_PULL_REQUEST##*/}' >> $BASH_ENV
+      - run:
           name: Post message to slack
           command: |
             curl -X POST -H 'Content-type: application/json' --data '{"text":"All done. Preview URL: https://deploy-preview-${REVISION}--test-automation-sandbox.netlify.app/, Mabl test is running: https://app.mabl.com/workspaces/-/output/deployments"}' ${SLACK_HOOK_URL}
