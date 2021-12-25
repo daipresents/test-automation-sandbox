@@ -3,7 +3,7 @@ orbs:
   node: circleci/node@1.1.6
 jobs:
   netlify-deploy:
-    dexecutor:
+    executor:
       name: node/default
     steps:
       - checkout
