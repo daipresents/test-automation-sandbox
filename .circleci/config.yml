@@ -55,4 +55,4 @@ workflows:
       - run-mabl-test:
           requires:
               - netlify-deploy-preview
-              - netlify-deploy-production
+              - netlify-deploy-
