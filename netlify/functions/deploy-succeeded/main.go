@@ -15,7 +15,6 @@ func main() {
 	fmt.Println(os.Getenv("BUILD_ID"))
 	fmt.Println("====")
 
-
 	auth := "key:" + os.Getenv("MABL_API_KEY")
   token := base64.StdEncoding.EncodeToString([]byte(auth))
 
