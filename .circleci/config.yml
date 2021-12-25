@@ -1,26 +1,58 @@
-# Use the latest 2.1 version of CircleCI pipeline process engine.
-# See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
-
-# Define a job to be invoked later in a workflow.
-# See: https://circleci.com/docs/2.0/configuration-reference/#jobs
+orbs:
+  node: circleci/node@1.1.6
 jobs:
-  say-hello:
-    # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
-    # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
-    docker:
-      - image: cimg/base:stable
-    # Add steps to the job
-    # See: https://circleci.com/docs/2.0/configuration-reference/#steps
+  netlify-deploy-preview:
+    executor:
+      name: node/default
     steps:
       - checkout
-      - run:
-          name: "Say hello"
-          command: "echo Hello, World!"
+      - node/with-cache:
+          steps:
+            - run: yarn
+            - run: yarn build
+            - run: yarn add netlify-cli
+            - run: yarn netlify deploy -d build -a ${NETLIFY_TOKEN} -s ${NETLIFY_API_ID}
 
-# Invoke jobs via workflows
-# See: https://circleci.com/docs/2.0/configuration-reference/#workflows
+  netlify-deploy-production:
+    executor:
+      name: node/default
+    steps:
+      - checkout
+      - node/with-cache:
+          steps:
+            - run: yarn
+            - run: yarn build
+            - run: yarn add netlify-cli
+            - run: yarn netlify deploy -p -d build -a ${NETLIFY_TOKEN} -s ${NETLIFY_API_ID}
+
+  run-mabl-test:
+    executor:
+      name: node/default
+    steps:
+      - deploy:
+          name: call mabl Deployment API Event
+          command: |
+            curl -s "https://api.mabl.com/events/deployment" \
+              -u "key:${MABL_API_KEY}" \
+              -H "Content-Type:application/json" \
+              -d "{\"environment_id\":\"bIIfJiJ4lefJcKozgmNBPw-e\",\"application_id\":\"Kew3dKp0yhv4MDOPXGNu7w-a\",\"plan_overrides\":{\"web_url\":\"https://61c72a21fa1ce466f1596b4c--test-automation-sandbox.netlify.app/\"},\"revision\":\"{{ .Revision }}\"}"
+
 workflows:
-  say-hello-workflow:
+  netlify-deploy-workflow:
     jobs:
-      - say-hello
+      - netlify-deploy-preview:
+          filters:
+            branches:
+              only:
+                - /deploy-preview-.*/
+      
+      - netlify-deploy-production:
+          filters:
+            branches:
+              only: master
+      
+      - run-mabl-test:
+          requires:
+              - netlify-deploy-preview
+              - netlify-deploy-production
