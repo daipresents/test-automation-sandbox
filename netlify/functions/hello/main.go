@@ -10,12 +10,15 @@ import (
 )
 
 func main() {
+	for _, e := range os.Environ() {
+		fmt.Println(e)
+	}
+
 	auth := "key:" + "HFZS3u6Ri3clMwr4TH8w3w"
   token := base64.StdEncoding.EncodeToString([]byte(auth))
-	fmt.Printf(token)
 
-	fmt.Printf(os.Getenv("BUILD_ID"))
-	fmt.Printf(os.Getenv("COMMIT_REF"))
+	fmt.Println(os.Getenv("MABL_API_KEY"))
+	fmt.Println(os.Getenv("COMMIT_REF"))
 
 	url := "https://api.mabl.com/events/deployment"
 
@@ -25,7 +28,7 @@ func main() {
 
 	req.Header.Add("Accept", "application/json")
 	req.Header.Add("Content-Type", "application/json")
-	req.Header.Add("Authorization", "Basic a2V5OkhGWlMzdTZSaTNjbE13cjRUSDh3M3c=")
+	req.Header.Add("Authorization", "Basic " + token)
 
 	res, _ := http.DefaultClient.Do(req)
 
