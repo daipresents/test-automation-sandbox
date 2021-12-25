@@ -45,11 +45,14 @@ workflows:
           filters:
             branches:
               only:
-                - /preview-.*/
+                - /deploy-preview-.*/
       
       - netlify-deploy-production:
           filters:
             branches:
               only: master
       
-      - run-mabl-test
+      - run-mabl-test:
+          requires:
+              - netlify-deploy-preview
+              - netlify-deploy-production
