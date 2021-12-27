@@ -71,11 +71,6 @@ jobs:
       name: node/default
     steps:
       - run:
-          name: "Setup PR_NUMBER from ${CIRCLE_PULL_REQUEST}"
-          command: |
-            PR_NUMBER=`echo ${CIRCLE_PULL_REQUEST} | grep -oP '\d+$'`
-            echo "export PR_NUMBER=$PR_NUMBER" >> $BASH_ENV
-      - run:
           name: Post message to slack for production workflow
           command: |
             curl -X POST -H 'Content-type: application/json' --data "{'text':'This <$CIRCLE_PULL_REQUEST|PR> was deployed to <https://test-automation-sandbox.netlify.app/|production env>. mabl test is running <https://app.mabl.com/workspaces/-/output/deployments|here>'}" ${SLACK_HOOK_URL}
