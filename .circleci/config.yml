@@ -115,7 +115,7 @@ workflows:
           filters:
             branches:
               only: main
-      - run-mabl-test-produciton:
+      - run-mabl-test-production:
           requires:
               - netlify-deploy-production
       - notify-slack-production:
