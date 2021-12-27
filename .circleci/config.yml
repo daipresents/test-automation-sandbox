@@ -26,33 +26,93 @@ jobs:
             - run: yarn add netlify-cli
             - run: yarn netlify deploy -p -d build -a ${NETLIFY_TOKEN} -s ${NETLIFY_API_ID}
 
-  run-mabl-test:
+  run-mabl-test-preview:
     executor:
       name: node/default
+    environment:
+      REVISION: ${CIRCLE_PULL_REQUEST##*/}
     steps:
-      - deploy:
-          name: call mabl Deployment API Event
+      - run:
+          # PR番号をここで取得する
+          # NetlifyのPreview環境はPRごとのURLになる。例： https://deploy-preview-${PR_NUMBER}--test-automation-sandbox.netlify.app/ 
+          name: "Setup PR_NUMBER from ${CIRCLE_PULL_REQUEST}"
+          command: |
+            PR_NUMBER=`echo ${CIRCLE_PULL_REQUEST} | grep -oP '\d+$'`
+            echo "export PR_NUMBER=$PR_NUMBER" >> $BASH_ENV
+      - run:
+          name: Call mabl Deployment API Event for Preview
           command: |
             curl -s "https://api.mabl.com/events/deployment" \
               -u "key:${MABL_API_KEY}" \
               -H "Content-Type:application/json" \
-              -d "{\"environment_id\":\"bIIfJiJ4lefJcKozgmNBPw-e\",\"application_id\":\"Kew3dKp0yhv4MDOPXGNu7w-a\",\"plan_overrides\":{\"web_url\":\"https://61c72a21fa1ce466f1596b4c--test-automation-sandbox.netlify.app/\"},\"revision\":\"{{ .Revision }}\"}"
+              -d "{\"environment_id\":\"bIIfJiJ4lefJcKozgmNBPw-e\",\"application_id\":\"Kew3dKp0yhv4MDOPXGNu7w-a\",\"plan_labels\":[\"Preview\"],\"plan_overrides\":{\"web_url\":\"https://deploy-preview-${PR_NUMBER}--test-automation-sandbox.netlify.app/\"},\"revision\":\"${CIRCLE_SHA1}\"}"
+
+  run-mabl-test-production:
+    executor:
+      name: node/default
+    environment:
+      REVISION: ${CIRCLE_PULL_REQUEST##*/}
+    steps:
+      - run:
+          name: Call mabl Deployment API Event for Production
+          command: |
+            curl -s "https://api.mabl.com/events/deployment" \
+              -u "key:${MABL_API_KEY}" \
+              -H "Content-Type:application/json" \
+              -d "{\"environment_id\":\"bIIfJiJ4lefJcKozgmNBPw-e\",\"application_id\":\"Kew3dKp0yhv4MDOPXGNu7w-a\",\"plan_labels\":[\"Production\"],\"plan_overrides\":{\"web_url\":\"https://test-automation-sandbox.netlify.app/\"},\"revision\":\"${CIRCLE_SHA1}\"}"
+
+  notify-slack-preview:
+    executor:
+      name: node/default
+    steps:
+      - run:
+          name: "Setup PR_NUMBER from ${CIRCLE_PULL_REQUEST}"
+          command: |
+            PR_NUMBER=`echo ${CIRCLE_PULL_REQUEST} | grep -oP '\d+$'`
+            echo "export PR_NUMBER=$PR_NUMBER" >> $BASH_ENV
+      - run:
+          name: Post message to slack for preview workflow
+          command: |
+            curl -X POST -H 'Content-type: application/json' --data "{'text':'This <$CIRCLE_PULL_REQUEST|PR> was deployed to <https://deploy-preview-${PR_NUMBER}--test-automation-sandbox.netlify.app/|previev env>. mabl test is running <https://app.mabl.com/workspaces/-/output/deployments|here>'}" ${SLACK_HOOK_URL}
+
+  notify-slack-production:
+    executor:
+      name: node/default
+    steps:
+      - run:
+          name: "Setup PR_NUMBER from ${CIRCLE_PULL_REQUEST}"
+          command: |
+            PR_NUMBER=`echo ${CIRCLE_PULL_REQUEST} | grep -oP '\d+$'`
+            echo "export PR_NUMBER=$PR_NUMBER" >> $BASH_ENV
+      - run:
+          name: Post message to slack for production workflow
+          command: |
+            curl -X POST -H 'Content-type: application/json' --data "{'text':'This <$CIRCLE_PULL_REQUEST|PR> was deployed to <https://test-automation-sandbox.netlify.app/|production env>. mabl test is running <https://app.mabl.com/workspaces/-/output/deployments|here>'}" ${SLACK_HOOK_URL}
 
 workflows:
-  netlify-deploy-workflow:
+  netlify-workflow-preview:
     jobs:
       - netlify-deploy-preview:
           filters:
             branches:
               only:
                 - /deploy-preview-.*/
-      
+      - run-mabl-test-preview:
+          requires:
+              - netlify-deploy-preview
+      - notify-slack-preview:
+          requires:
+              - run-mabl-test-preview
+
+  netlify-workflow-production:
+    jobs:
       - netlify-deploy-production:
           filters:
             branches:
-              only: master
-      
-      - run-mabl-test:
+              only: main
+      - run-mabl-test-production:
           requires:
-              - netlify-deploy-preview
               - netlify-deploy-production
+      - notify-slack-production:
+          requires:
+              - run-mabl-test-production
