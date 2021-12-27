@@ -73,7 +73,7 @@ jobs:
       - run:
           name: Post message to slack for production workflow
           command: |
-            curl -X POST -H 'Content-type: application/json' --data "{'text':'This <$CIRCLE_PULL_REQUEST|PR> was deployed to <https://test-automation-sandbox.netlify.app/|production env>. mabl test is running <https://app.mabl.com/workspaces/-/output/deployments|here>'}" ${SLACK_HOOK_URL}
+            curl -X POST -H 'Content-type: application/json' --data "{'text':'The PR was merged to <https://test-automation-sandbox.netlify.app/|production env>. mabl test is running <https://app.mabl.com/workspaces/-/output/deployments|here>'}" ${SLACK_HOOK_URL}
 
 workflows:
   netlify-workflow-preview:
