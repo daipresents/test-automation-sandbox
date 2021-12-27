@@ -5,8 +5,6 @@ jobs:
   netlify-deploy-preview:
     executor:
       name: node/default
-    environment:
-      REVISION_NO: <<pipeline.git.revision>>
     steps:
       - checkout
       - node/with-cache:
@@ -35,6 +33,8 @@ jobs:
       REVISION: ${CIRCLE_PULL_REQUEST##*/}
     steps:
       - run:
+          # PR番号をここで取得する
+          # NetlifyのPreview環境はPRごとのURLになる。例： https://deploy-preview-${PR_NUMBER}--test-automation-sandbox.netlify.app/ 
           name: "Setup PR_NUMBER from ${CIRCLE_PULL_REQUEST}"
           command: |
             PR_NUMBER=`echo ${CIRCLE_PULL_REQUEST} | grep -oP '\d+$'`
@@ -54,6 +54,8 @@ jobs:
       REVISION: ${CIRCLE_PULL_REQUEST##*/}
     steps:
       - run:
+          # PR番号をここで取得する
+          # NetlifyのPreview環境はPRごとのURLになる。例： https://deploy-preview-${PR_NUMBER}--test-automation-sandbox.netlify.app/ 
           name: "Setup PR_NUMBER from ${CIRCLE_PULL_REQUEST}"
           command: |
             PR_NUMBER=`echo ${CIRCLE_PULL_REQUEST} | grep -oP '\d+$'`
