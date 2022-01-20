@@ -12,6 +12,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="top-menu" element={<TopMenu />} />
+        <Route path="mt-sandbox" element={<mtSandbox />} />
       </Routes>
     </BrowserRouter>
   );
