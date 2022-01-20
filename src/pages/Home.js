@@ -9,7 +9,7 @@ export default function Home() {
   return (
     <div className="App">
       <div>
-        <h1>テスト自動化トレーニングサイトへようこそ！</h1>
+        <h1>テスト自動化トレーニングサイトへようこそ！ デブサミにようこそ！</h1>
         <form className="form">
           <input type="text" placeholder="メールアドレス" /><br />
           <input type="password" placeholder="パスワード" /><br />
